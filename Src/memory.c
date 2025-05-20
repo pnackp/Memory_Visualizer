@@ -1,3 +1,7 @@
+// Sorry for bad gramma , english 
+//
+// Memory Visual
+//
 #include <stdio.h>
 #include <stdlib.h>
 #include "memory.h"
@@ -10,14 +14,14 @@ Block *head = NULL;
 void my_malloc(int size){
 	if(size > MAX){printf("Have memory space:%d free\n",MAX); return;}
 	MAX -= size;
-	Block* temp = malloc(sizeof(Block));
+	Block* temp = malloc(sizeof(Block)); // create new block // like normal doubly link list
 	temp->size = size;
 	temp->id = id; 
-	temp->isFree = false;
-	temp->next = head;
-	temp->prev = NULL;
+	temp->isFree = false;  
+	temp->next = head; // set next is head 
+	temp->prev = NULL; 
 	if (head != NULL){
-		head->prev = temp;
+		head->prev = temp; // set prev
 	}
 	head = temp;
 	printf("Allocated %d units at Block ID: %d\n" ,size,id);
@@ -29,7 +33,7 @@ void my_free(int index)	{
 	Block*ptr = head;
 	while (ptr != NULL) {
 		if (ptr->id == index && !ptr->isFree){
-			ptr->isFree = true;
+			ptr->isFree = true; // check if == number input and isfree = false set to free
 			return;
 		}
 		ptr = ptr->next;
@@ -38,14 +42,18 @@ void my_free(int index)	{
 	return;
 }
 
-void defragment(){
-	Block* ptr = head;
+void defragment(){ // Concept check if ptr isfree and next is too . 
+	Block* ptr = head; // then combine ptr with other block is free 
 	while (ptr != NULL){
 		if (ptr->isFree && ptr->next != NULL && ptr->next->isFree){
-			Block* def = ptr->next;
-			while (def->isFree && def != NULL) {
+			Block* def = ptr->next; // def is RUNNER
+	 		while (def != NULL && def->isFree) {
+				Block* delet = def; // create delet for delete block
+				ptr->size += def->size; // combine current * with another free
+				ptr->next = def->next; 
 				def = def->next;
-				return;
+if (def != NULL){def->prev = ptr;} // check if next is not null
+				free(delet); // free
 			}
 		}		
 		ptr = ptr->next;
@@ -58,12 +66,11 @@ void show_memory(){
 	while(ptr != NULL){
 		printf("[ID: %d | ",ptr->id);
 		printf(" Size: %d |",ptr->size);
-		printf(" %s ] --> ", ptr->isFree ? "Free" : "Alloc");
+		printf(" %s ] --> ", ptr->isFree ? "Free" : "Alloc"); // if else 
 		ptr = ptr->next;
 	}
 	printf("NULL\n");
 	return;
 }
 
-void undo(){}
 
