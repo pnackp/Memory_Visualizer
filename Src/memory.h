@@ -11,10 +11,11 @@ typedef struct Block {
     struct Block* prev; // ถ้าอยาก defrag ซ้าย-ขวา
 } Block;
 
+extern Block* head;
+
 void my_malloc(int size);
 void my_free(int index);
 void show_memory();
 void defragment();
-void undo();
 
 #endif

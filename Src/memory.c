@@ -7,9 +7,11 @@
 #include "memory.h"
 #include <stdbool.h>
 
+#include "undo.h"
+
+Block* head = NULL;
 int MAX = 100; // memory MAX
 int id = 0 ; // set id every Block
-Block *head = NULL;
 
 void my_malloc(int size){
 	if(size > MAX){printf("Have memory space:%d free\n",MAX); return;}
@@ -25,6 +27,7 @@ void my_malloc(int size){
 	}
 	head = temp;
 	printf("Allocated %d units at Block ID: %d\n" ,size,id);
+	if (ur != NULL) keepdata(head);
 	id++;
 	return;
 }
@@ -34,6 +37,7 @@ void my_free(int index)	{
 	while (ptr != NULL) {
 		if (ptr->id == index && !ptr->isFree){
 			ptr->isFree = true; // check if == number input and isfree = false set to free
+			if (ur != NULL) keepdata(head);
 			return;
 		}
 		ptr = ptr->next;
@@ -52,12 +56,13 @@ void defragment(){ // Concept check if ptr isfree and next is too .
 				ptr->size += def->size; // combine current * with another free
 				ptr->next = def->next; 
 				def = def->next;
-if (def != NULL){def->prev = ptr;} // check if next is not null
+				if (def != NULL){def->prev = ptr;} // check if next is not null
 				free(delet); // free
 			}
 		}		
 		ptr = ptr->next;
 	}
+	if (ur != NULL) keepdata(head);
 	return;
 }
 
