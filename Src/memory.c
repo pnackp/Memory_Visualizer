@@ -6,8 +6,7 @@
 #include <stdlib.h>
 #include "memory.h"
 #include <stdbool.h>
-
-#include "undo.h"
+#include "undo_redo.h"
 
 Block* head = NULL;
 int MAX = 100; // memory MAX
@@ -27,7 +26,7 @@ void my_malloc(int size){
 	}
 	head = temp;
 	printf("Allocated %d units at Block ID: %d\n" ,size,id);
-	if (ur != NULL) keepdata(head);
+	data_undo(head);
 	id++;
 	return;
 }
@@ -37,7 +36,7 @@ void my_free(int index)	{
 	while (ptr != NULL) {
 		if (ptr->id == index && !ptr->isFree){
 			ptr->isFree = true; // check if == number input and isfree = false set to free
-			if (ur != NULL) keepdata(head);
+			data_undo(head);
 			return;
 		}
 		ptr = ptr->next;
@@ -62,7 +61,7 @@ void defragment(){ // Concept check if ptr isfree and next is too .
 		}		
 		ptr = ptr->next;
 	}
-	if (ur != NULL) keepdata(head);
+	data_undo(head);
 	return;
 }
 

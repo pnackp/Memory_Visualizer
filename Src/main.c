@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "memory.h"
-#include "undo.h"
+
 int main(){
-	ur = malloc(sizeof(undo_redo));
-	ur->size = 0;
 	int input , size , index;
 	do {
 		printf("===== Memory Allocator Menu =====\n");
@@ -21,8 +19,8 @@ int main(){
 			case 1:printf("Enter size to allocate:");scanf("%d",&size);my_malloc(size);break;
 			case 2:printf("Enter Block ID to free:");scanf("%d",&index);my_free(index);break;
 			case 3:printf("Cureent Memory:\n");show_memory();break;
-			case 4:printf("Choose Defragmented memory:");scanf("%d",&size);break;
-			case 5:printf("Undo:");undo();break;
+			case 4:defragment();break;
+			case 5:break;
 			default:printf("Invalid Number\n"); break;
 		}
 	}while (input != 6);
