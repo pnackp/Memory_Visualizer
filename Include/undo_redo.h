@@ -9,8 +9,8 @@ typedef struct undo_redo{
 	Block* arr[Array_MAX];
 }undo_redo;
 
-void data_redo();
-void data_undo();
+void data_redo(Block *head);
+void data_undo(Block *head);
 
 //for main
 void undo_call();
